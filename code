@@ -10,10 +10,10 @@ else:
     t0=float(input('고유시간을 입력해주세요(s)'))
     l0=float(input('고유길이를 입력해주세요(m)'))
     m0=float(input('고유질량을 입력해주세요(kg)'))
+    t=t0*r(v)
+    l=l0/r(v)
+    m=m0*r(v)
 
-t=t0*r(v)
-l=l0/r(v)
-m=m0*r(v)
 
 
 
