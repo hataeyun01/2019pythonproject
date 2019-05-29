@@ -1,12 +1,15 @@
 c=float(299792458)
 
-def r(v):
-    return float((1/(1-(v/c)**(2)))**(1/2))
+def r(a):
+    return float((1/(1-(a/c)**(2)))**(1/2))
 
 v=float(input('관측자의 속도를 입력해주세요(m/s)'))
-t0=float(input('고유시간을 입력해주세요(s)'))
-l0=float(input('고유길이를 입력해주세요(m)'))
-m0=float(input('고유질량을 입력해주세요(kg)'))
+if v>=c:
+    print('관측자의 속도는 빛의 속도보다 빠를 수 없습니다.')
+else:
+    t0=float(input('고유시간을 입력해주세요(s)'))
+    l0=float(input('고유길이를 입력해주세요(m)'))
+    m0=float(input('고유질량을 입력해주세요(kg)'))
 
 t=t0*r(v)
 l=l0/r(v)
