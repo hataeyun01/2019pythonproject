@@ -8,15 +8,16 @@ t0=float(input('고유시간을 입력해주세요(s)'))
 l0=float(input('고유길이를 입력해주세요(m)'))
 m0=float(input('고유질량을 입력해주세요(kg)'))
 
-
 t=t0*r(v)
 l=l0/r(v)
 m=m0*r(v)
 
 
+
+
 import matplotlib.pyplot as plt
 
-x=[a for a in range(0,299792458,10000000) ]
-y=[r(b) for b in range(0,299792458,10000000)]
+x=[a for a in range(0,299792458,1000) ]
+y=[r(b) for b in range(0,299792458,1000)]
 plt.plot(x,y)
 plt.show()          #v에 따른 로런츠 인자 그래프
