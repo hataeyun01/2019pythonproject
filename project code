@@ -15,9 +15,9 @@ else:
     l=l0/r(v)
     m=m0*r(v)
     
-
-
-c=float(299792458)
+    
+    
+    c=float(299792458)
 
 import matplotlib.pyplot as plt
 
@@ -40,6 +40,7 @@ else:
 
 
 
+#시간 팽창 시뮬레이션
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
@@ -99,6 +100,7 @@ HTML(ani.to_html5_video())
 
 
 
+
 #이거는 속도v인 사람 시간
 class SubplotAnimation1(animation.TimedAnimation):
     def __init__(self):
@@ -151,11 +153,6 @@ HTML(ani1.to_html5_video())
 
 
 
-
-
-
-
-
 #길이 수축 시뮬레이션
 x0= [c for c in range(int(l0))]
 y0= [1 for d in range(int(l0))]
@@ -170,3 +167,55 @@ plt.plot(x0,y0,linewidth=10,label='Unique length')
 plt.legend(loc='right')
 plt.show()
 
+
+
+
+#상대론적 질량 
+#지구의 사람
+
+import cv2
+
+image = cv2.imread("./obj.jpg", cv2.IMREAD_UNCHANGED)
+image2 = cv2.imread("./eq.jpg", cv2.IMREAD_UNCHANGED)
+image3 = cv2.imread("./chu.jpg", cv2.IMREAD_UNCHANGED)
+cv2.imshow('object',image)
+cv2.imshow('eq',image2)
+cv2.imshow('chu',image3)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+print('지구에서 물체의 무게는 ', m0,'kg입니다')
+print('그에 맞는 추의 무게는', m0,'kg입니다')
+
+
+
+
+
+#움직이는 사람을 지구에서 볼 때
+
+image4 = cv2.imread("./obj.jpg", cv2.IMREAD_UNCHANGED)
+image5 = cv2.imread("./eq.jpg", cv2.IMREAD_UNCHANGED)
+image6 = cv2.imread("./chu.jpg", cv2.IMREAD_UNCHANGED)
+imageHeight, imageWidth = image6.shape[:2]
+
+ 
+
+resizeHeight = 223*(int((r(v)**0.5)))
+
+resizeWidth  = 253*(int((r(v)**0.5)))
+
+ 
+
+resizeImage = cv2.resize(image6, (resizeHeight, resizeWidth), interpolation = cv2.INTER_CUBIC)
+
+ 
+
+
+cv2.imshow('obj2',image4)
+cv2.imshow('eq',image5)
+cv2.imshow('chu2', resizeImage)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+print('움직이는 물체의 무게는', m,'kg입니다')
+print('그에 맞는 추의 무게는 ', m, 'kg입니다')
