@@ -69,8 +69,8 @@ class SubplotAnimation(animation.TimedAnimation):
         ax1 = fig.add_subplot(1, 2, 1)
 
         self.t = np.linspace(0, 80, 400)
-        self.x = np.cos(-2 * np.pi * self.t /r(v) 10.)
-        self.y = np.sin(-2 * np.pi * self.t /r(v) 10.)
+        self.x = np.cos(-2 * np.pi * self.t /(r(v)*10).)
+        self.y = np.sin(-2 * np.pi * self.t /(r(v)*10).)
         self.z = 10 * self.t
 
         ax1.set_xlabel('x')
