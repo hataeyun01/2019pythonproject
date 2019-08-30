@@ -1,0 +1,236 @@
+[프로젝트 1 : 특수상대성이론의 주요 현상들을 직관적으로 이해하기]
+1)연구소 이름 : 유사과학 연구소
+2)연구소가 해결하려는 문제 : 물리를 좋아하지만, 머리가 똑똑하지 않아서 특수상대성이론을 공부할 때 직관적으로 이해가 되지 않는 할버트의 문제. 
+3)연구소의 깃헙 링크 : https://github.com/hataeyun01/2019pythonproject
+4-1)수정하거나 추가하고 싶은 내용
+여기서 로런츠 인자의 그래프를 보여주는데, 이 그래프를 조금 예쁘게 보고 싶다. 하지만, 많은 수를 아무리 쳐봐도 거의 수직인 그래프가 나타난다. 이를 해결하고 예쁘게 보고 싶다. 또한, 이 계산 과정을 직접 보여주는 것도 좋을껏 같다.
+4-2)내가 기여한 내용
+여기서 로런츠 인자의 그래프가 예쁘게 보이는 값들의 범위와 예시를 한번 보여주었으면 좋겠다.
+또한, 수식에서 정의가 약간 안맞는 것이 있어서 고쳤다.
+
+#39
+c=float(299792458)
+
+def r(a):
+    return float((1/(1-(a/c)**(2)))**(1/2))
+
+print('유사과학 연구소에 오신 것을 환영합니다!\n이곳에서는 특수상대성이론을 어려워하는 학생들에게 특수상대성이론의 현상들을 직관적으로 보여주기 위한 연구를 진행하고 있습니다.\n특수상대론의 3가지 중요한 현상인 시간 팽창, 길이 수축, 상대론적 질량에 대해 다룰 건데요, 먼저 상수들의 값을 입력해주세요.\n ')
+v=float(input('관측자의 속도를 입력해주세요.(m/s)\n'))
+if v>=c:
+    print('관측자의 속도는 빛의 속도보다 빠를 수 없습니다!')
+else:
+    t0=float(input('고유시간을 입력해주세요(s)\n'))
+    l0=float(input('고유길이를 입력해주세요(m)\n'))
+    m0=float(input('고유질량을 입력해주세요(kg)\n'))
+    t=t0*r(v)
+    l=l0/r(v)
+    m=m0*r(v)
+    
+    
+    
+    c=float(299792458)
+
+import matplotlib.pyplot as plt
+
+print('아래 그래프는 v에 따른 로런츠 인자의 그래프입니다.\nv가 c에 가까워질수록 값이 급격하게 증가하는 것을 볼 수 있죠?')
+
+x=[a for a in range(0,299792458,1000) ]
+y=[r(b) for b in range(0,299792458,1000)]
+plt.xlabel('v(m/s)')
+plt.ylabel('Lorentz factor')
+plt.plot(x,y,'r')
+plt.show()          #v에 따른 로런츠 인자 그래프
+
+
+v1=float(input('여기에 속도를 입력하면 로런츠 인자의 값을 볼 수 있습니다.'))
+if v1>=c:#v1>=c   ->   v1>c로 바꾸어야 로런츠 인자의 정의를 정확히 만족함.
+    print('관측자의 속도는 빛의 속도보다 빠를 수 없습니다!')
+else:
+    print(r(v1))
+
+
+
+
+#시간 팽창 시뮬레이션
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+import matplotlib.animation as animation
+from IPython.display import HTML
+from matplotlib import style
+plt.rcParams['animation.ffmpeg_path'] = 'C:\\ffmpeg\\bin\\ffmpeg.exe'
+
+#이거는 지구 시간
+
+class SubplotAnimation(animation.TimedAnimation):
+    def __init__(self):
+        fig = plt.figure()
+        ax1 = fig.add_subplot(1, 2, 1)
+
+        self.t = np.linspace(0, 80, 400)
+        self.x = np.cos(-2 * np.pi * self.t / 10.)
+        self.y = np.sin(-2 * np.pi * self.t / 10.)
+        self.z = 10 * self.t
+
+        ax1.set_xlabel('x')
+        ax1.set_ylabel('y')
+        self.line1 = Line2D([], [], color='black')
+        self.line1a = Line2D([], [], color='red', linewidth=2)
+        self.line1e = Line2D([], [], color='red', marker='o', markeredgecolor='r')
+        ax1.add_line(self.line1)
+        ax1.add_line(self.line1a)
+        ax1.add_line(self.line1e)
+        ax1.set_xlim(-1, 1)
+        ax1.set_ylim(-2, 2)
+        ax1.set_aspect('equal', 'datalim')
+
+
+        animation.TimedAnimation.__init__(self, fig, interval=50, blit=True)
+
+    def _draw_frame(self, framedata):
+        i = framedata
+        head = i - 1
+        head_slice = (self.t > self.t[i] - 1.0) & (self.t < self.t[i])
+
+        self.line1.set_data(self.x[:i], self.y[:i])
+        self.line1a.set_data(self.x[head_slice], self.y[head_slice])
+        self.line1e.set_data(self.x[head], self.y[head])
+
+        self._drawn_artists = [self.line1, self.line1a, self.line1e,]
+
+    def new_frame_seq(self):
+        return iter(range(self.t.size))
+
+    def _init_draw(self):
+        lines = [self.line1, self.line1a, self.line1e,]
+        for l in lines:
+            l.set_data([], [])
+
+ani = SubplotAnimation()
+HTML(ani.to_html5_video())
+
+
+
+
+#이거는 속도v인 사람 시간
+class SubplotAnimation1(animation.TimedAnimation):
+    def __init__(self):
+        fig = plt.figure()
+        ax1 = fig.add_subplot(1, 2, 1)
+
+        self.t = np.linspace(0, 80, 400)
+        self.x = np.cos(-2 * np.pi * self.t /(r(v)*10.))
+        self.y = np.sin(-2 * np.pi * self.t /(r(v)*10.))
+        self.z = 10 * self.t
+
+        ax1.set_xlabel('x')
+        ax1.set_ylabel('y')
+        self.line1 = Line2D([], [], color='black')
+        self.line1a = Line2D([], [], color='red', linewidth=2)
+        self.line1e = Line2D([], [], color='red', marker='o', markeredgecolor='r')
+        ax1.add_line(self.line1)
+        ax1.add_line(self.line1a)
+        ax1.add_line(self.line1e)
+        ax1.set_xlim(-1, 1)
+        ax1.set_ylim(-2, 2)
+        ax1.set_aspect('equal', 'datalim')
+
+
+        animation.TimedAnimation.__init__(self, fig, interval=50, blit=True)
+
+    def _draw_frame(self, framedata):
+        i = framedata
+        head = i - 1
+        head_slice = (self.t > self.t[i] - 1.0) & (self.t < self.t[i])
+
+        self.line1.set_data(self.x[:i], self.y[:i])
+        self.line1a.set_data(self.x[head_slice], self.y[head_slice])
+        self.line1e.set_data(self.x[head], self.y[head])
+
+        self._drawn_artists = [self.line1, self.line1a, self.line1e,]
+
+    def new_frame_seq(self):
+        return iter(range(self.t.size))
+
+    def _init_draw(self):
+        lines = [self.line1, self.line1a, self.line1e,]
+        for l in lines:
+            l.set_data([], [])
+
+
+ani1 = SubplotAnimation1()
+HTML(ani1.to_html5_video())
+
+
+
+
+#길이 수축 시뮬레이션
+x0= [c for c in range(int(l0))]
+y0= [1 for d in range(int(l0))]
+
+xf= [e for e in range(int(l))]
+yf= [1.5 for f in range(int(l))]
+
+plt.grid()
+plt.xlabel('Length(m)')
+plt.plot(xf,yf,linewidth=10,label='Length contraction')
+plt.plot(x0,y0,linewidth=10,label='Unique length')
+plt.legend(loc='right')
+plt.show()
+
+
+
+
+#상대론적 질량 
+#지구의 사람
+
+import cv2
+
+image = cv2.imread("./obj.jpg", cv2.IMREAD_UNCHANGED)
+image2 = cv2.imread("./eq.jpg", cv2.IMREAD_UNCHANGED)
+image3 = cv2.imread("./chu.jpg", cv2.IMREAD_UNCHANGED)
+cv2.imshow('object',image)
+cv2.imshow('eq',image2)
+cv2.imshow('chu',image3)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+print('지구에서 물체의 무게는 ', m0,'kg입니다')
+print('그에 맞는 추의 무게는', m0,'kg입니다')
+
+
+
+
+
+#움직이는 사람을 지구에서 볼 때
+
+image4 = cv2.imread("./obj.jpg", cv2.IMREAD_UNCHANGED)
+image5 = cv2.imread("./eq.jpg", cv2.IMREAD_UNCHANGED)
+image6 = cv2.imread("./chu.jpg", cv2.IMREAD_UNCHANGED)
+imageHeight, imageWidth = image6.shape[:2]
+
+ 
+
+resizeHeight = 223*(int((r(v)**0.5)))
+
+resizeWidth  = 253*(int((r(v)**0.5)))
+
+ 
+
+resizeImage = cv2.resize(image6, (resizeHeight, resizeWidth), interpolation = cv2.INTER_CUBIC)
+
+ 
+
+
+cv2.imshow('obj2',image4)
+cv2.imshow('eq',image5)
+cv2.imshow('chu2', resizeImage)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+print('움직이는 물체의 무게는', m,'kg입니다')
+print('그에 맞는 추의 무게는 ', m, 'kg입니다')
+
+5)내가 기여한 내용에 대한 설명
+로런츠 인자에서 속도에 대한 정의가 안맞다고 보이는 것이 있어서 그 부분을 고쳤고, 그래프를 어떻게 고치면 좋을지에 대한 아이디어. 생각을 제시하였다.
+6)내가 기여한 내용의 반영 여부 : (O,X 중 선택해주세요)
